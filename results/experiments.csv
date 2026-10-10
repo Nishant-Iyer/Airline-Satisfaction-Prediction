@@ -1,0 +1,4 @@
+version,date,note,n_features,cv_lgb,cv_xgb,cv_cat,cv_blend,public_lb,public_rank
+v1,2026-10-10,raw features + rating/delay aggregates,33,0.95877,0.95854,0.95818,0.95885,0.95834,925
+v2-no-teacher,2026-10-10,route profile + fold-safe TE (original data not attached; not submitted),65,0.96027,0.96008,0.95993,0.96043,,
+v2,2026-10-10,route profile + fold-safe TE + original teacher,68,0.96078,0.96076,0.96069,0.96093,0.96042,577
