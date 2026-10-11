@@ -4,16 +4,14 @@ A gradient-boosting pipeline for the **[Predicting Airline Satisfaction](https:/
 
 **[Case study](https://www.konnectingnots.com/projects/airline-satisfaction.html)**
 
----
-
-## 📊 Results
+## Results
 
 | Version | What changed | Blend CV AUC | Public LB | Rank |
 |---|---|---|---|---|
 | v1 | Raw features + row-wise rating/delay aggregates | 0.95885 | 0.95834 | #925 |
 | v2 | + route profile, fold-safe target encoding, original-data teacher | **0.96093** | **0.96042** | **#577** |
 
-CV and public leaderboard moved by the same +0.0021, so the 5-fold CV is a trustworthy guide for this data. Full numbers per model are in [`results/experiments.csv`](results/experiments.csv).
+Ranks are public-leaderboard positions at submission time; the competition is still running, so the final private-leaderboard result may differ. CV and public leaderboard moved by the same +0.0021, so the 5-fold CV is a trustworthy guide for this data. Full numbers per model are in [`results/experiments.csv`](results/experiments.csv).
 
 | Model (v2) | CV AUC |
 |---|---|
@@ -22,9 +20,7 @@ CV and public leaderboard moved by the same +0.0021, so the 5-fold CV is a trust
 | CatBoost | 0.96069 |
 | Rank blend (0.35 / 0.30 / 0.35) | **0.96093** |
 
----
-
-## 💡 Modeling Strategy
+## Modeling Strategy
 
 The training data (700k rows) is synthetic, generated from the public [Airline Passenger Satisfaction](https://www.kaggle.com/datasets/teejmahal20/airline-passenger-satisfaction) dataset. Three ideas did most of the work.
 
@@ -44,9 +40,7 @@ Competitors on the forum measured that appending the original 130k rows to the t
 ### Models and blend
 LightGBM, XGBoost and CatBoost (GPU) are trained on the same stratified 5 folds with early stopping. Out-of-fold predictions are rank-normalised and blended with weights chosen by a grid search on OOF AUC.
 
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 ├── notebooks/
@@ -61,11 +55,9 @@ LightGBM, XGBoost and CatBoost (GPU) are trained on the same stratified 5 folds 
 └── README.md
 ```
 
----
+## Setup & Execution
 
-## 🚀 Setup & Execution
-
-### On Kaggle (easiest)
+### On Kaggle
 Import a notebook from `notebooks/` into the competition, add the dataset `teejmahal20/airline-passenger-satisfaction` as an input, turn on a GPU accelerator and run all. A full run takes about 13 minutes on a T4.
 
 ### Locally
@@ -79,14 +71,16 @@ python src/train.py           # writes outputs/submission.csv, OOF/test predicti
 ```
 Set `QUICK_MODE = True` at the top of `src/train.py` for a fast 100k-row, 3-fold run while experimenting. Each feature block (`USE_ROUTE`, `USE_TE`, `USE_TEACHER`) can be switched off to measure its effect.
 
----
-
-## 🔭 Next steps
+## Next steps
 
 - **Model diversity.** The three boosted models now score within 0.0001 of each other, so blending adds little. A neural net (e.g. RealMLP) or a tabular foundation model such as TabPFN should make different errors.
 - **Ablation** of each feature block on the full data.
 - **Tuning** LightGBM and CatBoost once the feature set is settled.
 
-## 🙏 Credits
+## Credits
 
 The route-profile, original-data teacher and feature-ladder ideas came from the competition's discussion forum, in particular posts by Dmitriy Kolmikov (Flight Distance as a route ID) and Koumei Maki (feature ladder, crediting @goodpjw2008, @evgendvorkin and @busyaprime). The implementation here is my own.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
